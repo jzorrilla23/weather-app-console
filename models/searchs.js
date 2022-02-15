@@ -10,7 +10,7 @@ class Searchs {
     get paramMapBox () {
 
         return {
-            'access_token': 'pk.eyJ1Ijoiam9zdWV6b3JyaWxsYTIzIiwiYSI6ImNrem9uM2p6MTBiYTIyb25ha3JsOG1jMHoifQ.vhYivRgn3zOvbjGkXAFZPg',
+            'access_token': process.env.MAPBOX_KEY,
             'language': 'es',
             'limit': 5
         }
@@ -23,13 +23,10 @@ class Searchs {
                 params: this.paramMapBox
             })
             const answer = await instance.get();
-            console.log(answer.data);
-            // answer.data.features.forEach(element => {
-            //     console.log(element.text);
-            // });
-            // console.log(answer.data.features);
+            console.log(answer.data.features);
             return [];
         }catch(error){
+            console.log(error)
             return [];
         }
         
