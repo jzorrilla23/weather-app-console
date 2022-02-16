@@ -69,6 +69,30 @@ const readInput = async(message)=>{
     return desc;
 }
 
+const showPlaces = async ( places = [] )  => {
+    const choices = places.map((place, i)=>{
+        const idx = `${i + 1}`.green;
+
+        return {
+            value:place.id,
+            name:`${idx} ${place.name}`,
+        }
+    })
+
+    choices.unshift({value:'0', name:'0. '.green + 'Quit'});
+
+    const question = [
+        {
+            type:'list',
+            name:'id',
+            message: 'Choose the place',
+            choices
+        }
+    ]
+    const {id} = await inquirer.prompt(question);
+    return id;
+}
+
 const checkTaskComplete = async(tasks=[])=>{
     const choices = tasks.map((task, i)=>{
         const idx = `${i + 1}`.green;
@@ -97,5 +121,6 @@ module.exports = {
     readInput,
     deleteMenu,
     confirm,
-    checkTaskComplete
+    checkTaskComplete,
+    showPlaces
 }

@@ -23,7 +23,18 @@ class Searchs {
                 params: this.paramMapBox
             })
             const answer = await instance.get();
-            console.log(answer.data.features);
+            
+            if(answer.data.features.length > 0){
+                return answer.data.features.map(place =>(
+                    {
+                        id:place.id,
+                        name:place.place_name,
+                        lng:place.center[0],
+                        lat:place.center[1]
+                    }
+                ));
+            }
+
             return [];
         }catch(error){
             console.log(error)
