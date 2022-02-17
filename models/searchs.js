@@ -7,6 +7,7 @@ class Searchs {
    
     constructor(){
         // TODO: read the database if exist
+        this.readDb();
     }
     
     get paramMapBox () {
@@ -86,6 +87,12 @@ class Searchs {
 
     saveDb(data){
         fs.writeFileSync(this.dbPath, JSON.stringify(data))
+    }
+
+    readDb(){
+        if(fs.existsSync(this.dbPath)){
+            this.history = JSON.parse(fs.readFileSync(this.dbPath));
+        }
     }
 }
 
