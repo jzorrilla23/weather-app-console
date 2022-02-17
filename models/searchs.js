@@ -1,8 +1,10 @@
+const fs = require('fs')
 const axios = require('axios');
 
 class Searchs {
-    history = ['pais1', 'pais2', 'pais3'];
-
+    history = [];
+    dbPath = './db/database.json'
+   
     constructor(){
         // TODO: read the database if exist
     }
@@ -16,6 +18,20 @@ class Searchs {
         }
     } 
 
+    saveHistory(name = '') {
+        if(!this.history.includes(name)){
+
+            if (this.history.length < 5){
+                this.history.unshift(name);
+            }
+            else {
+                this.history.pop();
+                this.history.unshift(name);
+            }
+            this.saveDb(this.history);
+        }
+    }
+    
     async city(place=''){
         try{
             const instance = axios.create({
@@ -41,6 +57,35 @@ class Searchs {
             return [];
         }
         
+    }
+
+    async weatherPlace(lon,lat){
+        try{
+
+            const instance = axios.create({
+                baseURL : 'https://api.openweathermap.org/data/2.5/weather',
+                params : {
+                    'appid' : process.env.OPENWEATHER_KEY,
+                    lat,
+                    lon,
+                    'lang':'es',
+                    'unit':'metric'
+                }
+            })
+
+            const anwser = await instance.get();
+            return {
+                desc: anwser.data.weather[0].description,
+                min: anwser.data.main.temp_min,
+                max: anwser.data.main.temp_max
+            };
+        }catch(error){
+            console.log(error)
+        }
+    }
+
+    saveDb(data){
+        fs.writeFileSync(this.dbPath, JSON.stringify(data))
     }
 }
 
