@@ -28,6 +28,7 @@ const main = async () => {
             
             case 2:
                 console.log('Hisotrial')
+
                 console.log(searchs.history)
                 break;
             
